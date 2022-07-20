@@ -1,24 +1,74 @@
-import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import AppMenu from './AppMenu';
+import Planets from './Planets';
+import Planet from './Planet';
+import Order from './Order';
+import Auth from './Auth';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#fff',
+    },
+    mode: 'dark',
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        disableRipple: true
+      },
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          color: '#fff',
+          fontSize: 20,
+          borderRadius: 15,
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        notchedOutline: {
+          border: 'none',
+        },
+      }
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          borderRadius: 15,
+        },
+      },
+    },
+  },
+  typography: {
+    body1: {
+      color: '#fff',
+      fontFamily: `'Arial', sans-serif`,
+    }
+  }
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <AppMenu />
+        <Routes>
+          <Route path="/planets" element={<Planets />} />
+          <Route path="/planets/:planetId" element={<Planet />} />
+          <Route path="/tickets" element={<Order />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route
+            path="*"
+            element={<Navigate to="/planets" />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
